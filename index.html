@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi página personal - Daniela Peralta</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --header-bg: linear-gradient(135deg,#e99ab8,#d7a5d9);
+    --footer-bg: linear-gradient(135deg,#e8a0bd,#c5a0d8);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family:'Lato',sans-serif;
+    margin:20px;
+    background:
+        radial-gradient(circle at 15% 20%,rgba(217,174,191,.18),transparent 40%),
+        radial-gradient(circle at 85% 80%,rgba(198,177,207,.18),transparent 40%),
+        #f9edf3;
+    background-attachment:fixed;
+    min-height:100vh;
+    color:#000 !important;
+    font-weight:400;
+    letter-spacing:.2px;
+}
+
+h1,h2 {
+    font-family:'Playfair Display',Georgia,serif;
+    letter-spacing:.5px;
+    color:#000 !important;
+}
+
+/* LETRAS NEGRAS */
+.header,
+.header h1,
+.header p,
+.menu a,
+.contenedor,
+.contenedor h2,
+.box-content,
+.box-content p,
+.pie,
+.pie p,
+.personalizar {
+    color:#000 !important;
+}
+
+button, label, span, a, p, h1, h2, strong {
+    color:#000;
+}
+
+/* BOTONES DE COLOR */
+.mini-btn {
+    position:absolute;
+    width:15px;
+    height:15px;
+    padding:0;
+    border:1px solid white;
+    border-radius:50%;
+    background:linear-gradient(135deg,#d66c9b,#a77bc5);
+    cursor:pointer;
+    opacity:.9;
+    z-index:6;
+    box-shadow:0 0 5px rgba(100,0,60,.3);
+}
+
+.mini-btn:hover {
+    opacity:1;
+    transform:scale(1.15);
+}
+
+.header .mini-btn,
+.pie .mini-btn {
+    top:10px;
+    left:10px;
+}
+
+.contenedor .mini-btn {
+    top:10px;
+    right:10px;
+}
+
+/* VENTANA DE COLORES */
+.mini-pop {
+    display:none;
+    position:absolute;
+    top:30px;
+    padding:10px;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 8px 22px rgba(100,0,60,.25);
+    z-index:25;
+    color:#000;
+    width:155px;
+}
+
+.mini-pop.show {
+    display:block;
+}
+
+.header .mini-pop,
+.pie .mini-pop {
+    left:8px;
+}
+
+.contenedor .mini-pop {
+    right:8px;
+}
+
+.mini-pop .titulo {
+    display:block;
+    font-size:11px;
+    margin-bottom:7px;
+    font-weight:700;
+}
+
+.mini-pop input[type="color"] {
+    width:100%;
+    height:28px;
+    border:1px solid #e7d3dc;
+    border-radius:6px;
+    cursor:pointer;
+    padding:0;
+    margin-bottom:8px;
+}
+
+.mini-swatches {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+}
+
+.mini-swatch {
+    height:24px;
+    padding:0;
+    border:1px solid white;
+    border-radius:5px;
+    cursor:pointer;
+    box-shadow:0 0 0 1px #d9c2cc;
+    transition:transform .15s;
+}
+
+.mini-swatch:hover {
+    transform:scale(1.12);
+}
+
+/* ENCABEZADO */
+.header {
+    background:var(--header-bg);
+    color:#000;
+    padding:28px;
+    text-align:center;
+    border-radius:16px;
+    position:relative;
+    box-shadow:0 6px 20px rgba(173,20,87,.2);
+    transition:background .4s;
+}
+
+.header h1 {
+    margin:0 0 7px;
+    font-size:36px;
+}
+
+.header p {
+    margin:0;
+    font-weight:300;
+    letter-spacing:2px;
+    font-size:13px;
+    text-transform:uppercase;
+}
+
+/* PERSONALIZAR */
+.personalizar {
+    position:absolute;
+    top:12px;
+    right:12px;
+    font-size:10px;
+    padding:6px 9px;
+    color:#000;
+    background:rgba(255,255,255,.45);
+    border:1px solid rgba(0,0,0,.3);
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.personalizar:hover {
+    background:rgba(255,255,255,.7);
+}
+
+/* PANEL */
+.panel {
+    display:none;
+    position:absolute;
+    top:42px;
+    right:10px;
+    width:205px;
+    padding:13px;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 8px 22px rgba(100,0,60,.25);
+    z-index:20;
+    color:#000;
+    text-align:left;
+}
+
+.panel.abierto {
+    display:block;
+}
+
+.panel .titulo {
+    font-family:'Playfair Display',serif;
+    font-size:14px;
+    display:block;
+    margin-bottom:8px;
+}
+
+.panel label {
+    display:block;
+    font-size:11px;
+    margin:10px 0 4px;
+}
+
+.panel input[type="color"] {
+    width:100%;
+    height:30px;
+    cursor:pointer;
+    border:none;
+    background:none;
+}
+
+.panel .muestras {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:7px;
+}
+
+.panel .muestra {
+    height:38px;
+    border:2px solid white;
+    border-radius:7px;
+    cursor:pointer;
+    box-shadow:0 0 0 1px #d9c2cc;
+}
+
+.panel .reset {
+    width:100%;
+    margin-top:10px;
+    padding:8px;
+    font-size:11px;
+    color:#000;
+    background:#f0c5d8;
+    border:1px solid #d98eae;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* MENÚ */
+.menu {
+    background:linear-gradient(135deg,#e9a0bd,#c39bd8);
+    padding:16px;
+    text-align:center;
+    margin-top:14px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(173,20,87,.2);
+}
+
+.menu a {
+    color:#000;
+    text-decoration:none;
+    margin:15px;
+    display:inline-block;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    font-size:13px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.menu a:hover {
+    color:#42253a;
+    transform:translateY(-2px);
+}
+
+/* CONTENEDORES */
+.contenido {
+    display:flex;
+    flex-wrap:wrap;
+    gap:17px;
+    margin-top:17px;
+}
+
+.contenedor {
+    padding:20px;
+    flex:1 1 40%;
+    border-radius:15px;
+    position:relative;
+    color:#000;
+    box-shadow:0 6px 20px rgba(150,40,100,.2);
+    transition:background .4s;
+}
+
+/* DEGRADADO DIFERENTE PARA CADA CAJA */
+#biografia {
+    background:linear-gradient(135deg,#f2b4cb,#e59ab8);
+}
+
+#fotos {
+    background:linear-gradient(135deg,#d9b7ed,#bd9bdc);
+}
+
+#musica {
+    background:linear-gradient(135deg,#f5c0d4,#e9a4c3);
+}
+
+#video {
+    background:linear-gradient(135deg,#c5b4e8,#a997d5);
+}
+
+.contenedor h2 {
+    margin:0;
+    padding-right:25px;
+    color:#000;
+    text-shadow:none;
+    cursor:pointer;
+    user-select:none;
+}
+
+.box-content {
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height .45s ease,opacity .3s ease,margin-top .3s ease;
+}
+
+.contenedor.open .box-content {
+    max-height:1000px;
+    opacity:1;
+    margin-top:12px;
+}
+
+.contenedor.open {
+    min-height:160px;
+}
+
+.box-content p {
+    margin:8px 0;
+    line-height:1.7;
+    color:#000;
+    text-shadow:none;
+    text-align:justify;
+}
+
+img {
+    max-width:100%;
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(90,0,50,.2);
+}
+
+audio,video {
+    max-width:100%;
+    border-radius:10px;
+}
+
+/* VIDEO */
+.yt-video {
+    position:relative;
+    width:100%;
+    max-width:500px;
+    margin:auto;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(90,0,50,.2);
+}
+
+.yt-video video {
+    display:block;
+    width:100%;
+}
+
+/* PIE DE PÁGINA */
+.pie {
+    background:var(--footer-bg);
+    color:#000;
+    padding:20px;
+    text-align:center;
+    margin-top:17px;
+    border-radius:13px;
+    font-weight:300;
+    letter-spacing:1.3px;
+    box-shadow:0 6px 20px rgba(100,0,60,.2);
+    position:relative;
+    transition:background .4s;
+}
+
+.pie p {
+    margin:5px 0;
+    color:#000;
+}
+
+.redes {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:22px;
+    margin:18px 0;
+    flex-wrap:wrap;
+}
+
+.redes a {
+    transition:transform .2s;
+}
+
+.redes a:hover {
+    transform:scale(1.2);
+}
+
+.redes img {
+    width:35px;
+    height:35px;
+    box-shadow:none;
+}
+
+/* CORREO */
+.redes a.correo {
+    color:#000;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+html {
+    scroll-behavior:smooth;
+}
+
+@media(max-width:650px) {
+    body {
+        margin:10px;
+    }
+
+    .contenido {
+        flex-direction:column;
+    }
+
+    .menu a {
+        margin:8px;
+        font-size:11px;
+    }
+
+    .header h1 {
+        font-size:27px;
+    }
+
+    .header {
+        padding:35px 15px 22px;
+    }
+
+    .contenedor {
+        flex-basis:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ENCABEZADO -->
+<header class="header" id="header">
+
+<button class="mini-btn" onclick="togglePop(event,this)"
+aria-label="Cambiar degradado del encabezado"></button>
+
+<div class="mini-pop">
+<span class="titulo">Degradado encabezado</span>
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setHeaderGrad('linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setHeaderGrad('linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setHeaderGrad('linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setHeaderGrad('linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<h1>Daniela Peralta</h1>
+<p>Mi página personal</p>
+
+<button class="personalizar" id="btnPersonalizar"
+onclick="abrirPanel(event)" aria-expanded="false">
+Personalizar
+</button>
+
+<div class="panel" id="panel">
+<span class="titulo">Personalizar página</span>
+
+<label for="colorFondo">Color de fondo</label>
+<input type="color" id="colorFondo" value="#f9edf3"
+oninput="aplicarFondo(this.value)">
+
+<label>Degradados de la página</label>
+
+<div class="muestras">
+<button class="muestra" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="aplicarFondo('linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="muestra" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="aplicarFondo('linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="muestra" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="aplicarFondo('linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="muestra" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="aplicarFondo('linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+
+<button class="reset" onclick="resetTodo()">Restablecer todo</button>
+</div>
+</header>
+
+<!-- MENÚ -->
+<nav class="menu">
+<a href="#biografia" onclick="openBox(event,'biografia')">Biografía</a>
+<a href="#fotos" onclick="openBox(event,'fotos')">Fotos</a>
+<a href="#musica" onclick="openBox(event,'musica')">Música</a>
+<a href="#video" onclick="openBox(event,'video')">Video</a>
+</nav>
+
+<!-- CONTENIDO -->
+<div class="contenido">
+
+<!-- BIOGRAFÍA -->
+<div class="contenedor" id="biografia">
+
+<button class="mini-btn" onclick="togglePop(event,this)"></button>
+
+<div class="mini-pop">
+<span class="titulo">Color de esta caja</span>
+<input type="color" value="#f2b4cb" oninput="setBoxColor(this,'biografia')">
+
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setBoxGrad('biografia','linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setBoxGrad('biografia','linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setBoxGrad('biografia','linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setBoxGrad('biografia','linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<h2 onclick="toggleBox('biografia')">Biografía</h2>
+
+<div class="box-content">
+<p>Soy Daniela Peralta, actualmente curso mis estudios universitarios en la Universidad Técnica de Babahoyo (UTB), en la carrera de Sistemas de Información. Me describo como una persona que busca salir adelante, aprender de cada experiencia y aprovechar las oportunidades que se presentan en mi camino. Me gusta proponerme objetivos y trabajar poco a poco para conseguirlos. Considero que cada día es una nueva oportunidad para descubrir algo diferente y mejorar como persona.</p>
+
+<p>Mi interés por los Sistemas de Información nace de la curiosidad por conocer cómo funciona la tecnología y todo lo que se puede crear mediante ella. Durante mi formación espero adquirir conocimientos que me permitan desarrollar proyectos, encontrar soluciones a diferentes necesidades y desenvolverme con seguridad en el ámbito profesional. Fuera de mis estudios, me gusta disfrutar de la música, pasar tiempo con las personas que aprecio y dedicar momentos a las actividades que me hacen sentir bien. A futuro, deseo culminar mis estudios, alcanzar estabilidad profesional y sentirme orgullosa de todo lo que he logrado. Mi propósito es seguir avanzando, confiar en mis capacidades y construir un futuro lleno de nuevas oportunidades..</p>
+</div>
+</div>
+
+<!-- FOTOS -->
+<div class="contenedor" id="fotos">
+
+<button class="mini-btn" onclick="togglePop(event,this)"></button>
+
+<div class="mini-pop">
+<span class="titulo">Color de esta caja</span>
+<input type="color" value="#d9b7ed" oninput="setBoxColor(this,'fotos')">
+
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setBoxGrad('fotos','linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setBoxGrad('fotos','linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setBoxGrad('fotos','linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setBoxGrad('fotos','linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<h2 onclick="toggleBox('fotos')">Mis Fotos</h2>
+
+<div class="box-content">
+<img src="WhatsApp Image 2026-11-05 at 9.59.40 AM.png" alt="Mi fotografía" width="180">
+<p>Mis fotografías personales.</p>
+</div>
+</div>
+
+<!-- MÚSICA -->
+<div class="contenedor" id="musica">
+
+<button class="mini-btn" onclick="togglePop(event,this)"></button>
+
+<div class="mini-pop">
+<span class="titulo">Color de esta caja</span>
+<input type="color" value="#f5c0d4" oninput="setBoxColor(this,'musica')">
+
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setBoxGrad('musica','linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setBoxGrad('musica','linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setBoxGrad('musica','linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setBoxGrad('musica','linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<h2 onclick="toggleBox('musica')">Mi Música</h2>
+
+<div class="box-content">
+<p><strong>Hey Mor</strong> – Feid</p>
+
+<div class="yt-video">
+<audio controls style="width:100%">
+<source src="Ozuna, Feid - Hey Mor (Visualizer Oficial) Ozutochi(mp3j.cc).mp3" type="audio/mpeg">
+Tu navegador no admite este audio.
+</audio>
+</div>
+</div>
+</div>
+
+<!-- VIDEO -->
+<div class="contenedor" id="video">
+
+<button class="mini-btn" onclick="togglePop(event,this)"></button>
+
+<div class="mini-pop">
+<span class="titulo">Color de esta caja</span>
+<input type="color" value="#c5b4e8" oninput="setBoxColor(this,'video')">
+
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setBoxGrad('video','linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setBoxGrad('video','linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setBoxGrad('video','linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setBoxGrad('video','linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<h2 onclick="toggleBox('video')">Mi Video</h2>
+
+<div class="box-content">
+<p>Mi video personal.</p>
+
+<video width="250" controls>
+<source src="WhatsApp Video 2026-11-05 at 11.43.22 AM.mp4" type="video/mp4">
+
+</video>
+</div>
+</div>
+
+</div>
+
+<!-- PIE DE PÁGINA -->
+<footer class="pie" id="footer">
+
+<button class="mini-btn" onclick="togglePop(event,this)"></button>
+
+<div class="mini-pop">
+<span class="titulo">Degradado del pie</span>
+
+<div class="mini-swatches">
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f2b4cb,#e59ab8)" onclick="setFooterGrad('linear-gradient(135deg,#f2b4cb,#e59ab8)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#d9b7ed,#bd9bdc)" onclick="setFooterGrad('linear-gradient(135deg,#d9b7ed,#bd9bdc)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#f5c0d4,#e9a4c3)" onclick="setFooterGrad('linear-gradient(135deg,#f5c0d4,#e9a4c3)')"></button>
+<button class="mini-swatch" style="background:linear-gradient(135deg,#c5b4e8,#a997d5)" onclick="setFooterGrad('linear-gradient(135deg,#c5b4e8,#a997d5)')"></button>
+</div>
+</div>
+
+<p>2026 · Daniela Peralta</p>
+<p>Mi página personal</p>
+
+<!-- CORREO ELECTRÓNICO -->
+<div class="redes">
+<a class="correo" href="mailto:danielaperaltabenites@gmail.com">
+✉ danielaperaltabenites@gmail.com
+</a>
+</div>
+
+</footer>
+
+<script>
+function $(id) {
+    return document.getElementById(id);
+}
+
+function cerrarPops() {
+    document.querySelectorAll(".mini-pop.show, .panel.abierto").forEach(p => {
+        p.classList.remove("show","abierto");
+    });
+
+    $("btnPersonalizar").setAttribute("aria-expanded","false");
+}
+
+document.addEventListener("click",function(e) {
+    if(e.target.closest(".mini-pop") ||
+       e.target.closest(".panel") ||
+       e.target.closest(".mini-btn") ||
+       e.target.closest(".personalizar")) return;
+
+    cerrarPops();
+});
+
+document.addEventListener("keydown",function(e) {
+    if(e.key === "Escape") cerrarPops();
+});
+
+function togglePop(event,btn) {
+    event.stopPropagation();
+
+    const pop = btn.nextElementSibling;
+    const abierto = pop.classList.contains("show");
+
+    cerrarPops();
+
+    if(!abierto) pop.classList.add("show");
+}
+
+function abrirPanel(event) {
+    event.stopPropagation();
+
+    const panel = $("panel");
+    const abierto = panel.classList.toggle("abierto");
+
+    $("btnPersonalizar").setAttribute(
+        "aria-expanded",abierto ? "true" : "false"
+    );
+}
+
+function aplicarFondo(valor) {
+    document.body.style.background = valor;
+}
+
+function setHeaderGrad(grad) {
+    document.documentElement.style.setProperty("--header-bg",grad);
+    cerrarPops();
+}
+
+function setFooterGrad(grad) {
+    document.documentElement.style.setProperty("--footer-bg",grad);
+    cerrarPops();
+}
+
+function setBoxColor(input,id) {
+    $(id).style.background = input.value;
+}
+
+function setBoxGrad(id,grad) {
+    $(id).style.background = grad;
+    cerrarPops();
+}
+
+function toggleBox(id) {
+    $(id).classList.toggle("open");
+}
+
+function openBox(event,id) {
+    event.preventDefault();
+    cerrarPops();
+
+    const caja = $(id);
+    caja.classList.add("open");
+
+    setTimeout(() => {
+        caja.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+    },60);
+}
+
+function resetTodo() {
+    document.body.style.background = "";
+
+    document.documentElement.style.removeProperty("--header-bg");
+    document.documentElement.style.removeProperty("--footer-bg");
+
+    document.querySelectorAll(".contenedor").forEach(c => {
+        c.style.background = "";
+    });
+
+    $("colorFondo").value = "#f9edf3";
+
+    cerrarPops();
+}
+</script>
+
+</body>
+</html>
